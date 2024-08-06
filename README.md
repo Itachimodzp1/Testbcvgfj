@@ -1,9 +1,9 @@
 local mhyesTOGGLE = false
 local mhnoTOGGLE = false
 local fixgrassTOGGLE = false
-local unlockallskinTOGGLE = false
-local unlockspellTOGGLE = false
-local showjungleTOGGLE = false
+local hidenameTOGGLE = false
+local upgradefpsTOGGLE = false
+local dropviewTOGGLE = false
 local nocdTOGGLE = false
 local mhnovtwoTOGGLE = false
 
@@ -278,8 +278,7 @@ end
 function checkArchitecture()
     local targetInfo = gg.getTargetInfo()
     local arch = gg.getTargetInfo().x64
-    gg.alert("Vip Script By Mgubs")
-    gg.alert("Script Expired On September 1,2024")
+    gg.alert("ITACHI MLBB LOADER BETA TEST")
     if arch then
         gg.alert("You Are Running On 64Bit")
         onA = "-2,999,674,700,646,286,368"
@@ -289,893 +288,481 @@ function checkArchitecture()
     end
 end
 
-function setValues(address, flags, value) gg.setValues({[1] = {address = address, flags = flags, value = value}}) end
-local running = true
-function setvalue(address,flags,value)
-local tt={} tt[1]={} tt[1].address=address tt[1].flags=flags tt[1].value=value gg.setValues(tt) end
-function split(szFullString, szSeparator)
-    local nSplitArray = {}
-    local nFindStartIndex = 1
-    local nSplitIndex = 1
-    
-    while true do
-        local nFindLastIndex = string.find(szFullString, szSeparator, nFindStartIndex)
-        
-        if not nFindLastIndex then
-            nSplitArray[nSplitIndex] = string.sub(szFullString, nFindStartIndex, string.len(szFullString))
-            break
-        end
-        
-        nSplitArray[nSplitIndex] = string.sub(szFullString, nFindStartIndex, nFindLastIndex - 1)
-        nFindStartIndex = nFindLastIndex + string.len(szSeparator)
-        nSplitIndex = nSplitIndex + 1
-    end
-    
-    return nSplitArray
+function isProcess64Bit()
+  -- Function -> by CmP: https://gameguardian.net/forum/topic/36604-how-to-get-instruction-set-architecture-on-emulator-virtual-memory-addresses/?do=findComment&comment=135506
+  local regions = gg.getRangesList()
+  local lastAddress = regions[#regions]["end"]
+  return (lastAddress >> 32) ~= 0
 end
 
-function setValue(libX , regionX , addressX , flagsX , valueX)
-getLib = gg.getRangesList(libX)
-for name , lib in ipairs(getLib) do
-if lib.state == regionX then Region = name break end
-end
-if Region == nil then gg.toast("Not found") return nil end
-val = {{address = getLib[Region].start + addressX , flags = flagsX , value = valueX, freeze = true}}
-gg.addListItems(val)
-gg.clearList()
-return true
+function noselect()
+  gg.toast("You not select anything")
 end
 
-hexTrue = "D6 5F 03 C0 D2 80 00 20h"
-hexFalse = "D6 5F 03 C0 D2 80 00 00h"
-
-function xgxc(szpy, qmxg)
-    for x = 1, #qmxg do
-        local xgpy = szpy + qmxg[x]["offset"]
-        local xglx = qmxg[x]["type"]
-        local xgsz = qmxg[x]["value"]
-        local xgdj = qmxg[x]["freeze"]
-        
-        if xgdj == nil or xgdj == "" then
-            gg.setValues({[1] = {address = xgpy, flags = xglx, value = xgsz}})
-        else
-            gg.addListItems({[1] = {address = xgpy, flags = xglx, freeze = xgdj, value = xgsz}})
-        end
-    end
+function cb_nothingFound()
+  if gg.getResultsCount() == 0 then
+    gg.alert("Search not found, Use Fuzzy or Xa")
+    start()
+  end
 end
-function xqmnb(qmnb)
+
+
+local ISA = isProcess64Bit()
+local resultsCount = gg.getResultsCount()
 gg.clearResults()
-    gg.clearResults()
-    gg.setRanges(qmnb[1]["memory"])
-    gg.searchNumber(qmnb[3]["value"], qmnb[3]["type"])
-    
-    if gg.getResultCount() > 0 then
-        gg.refineNumber(qmnb[3]["value"], qmnb[3]["type"])
-        gg.refineNumber(qmnb[3]["value"], qmnb[3]["type"])
-        gg.refineNumber(qmnb[3]["value"], qmnb[3]["type"])
-        
-        local sl = gg.getResults(999999)
-        local sz = gg.getResultCount()
-        
-        if sz > 999999 then
-            sz = 999999
-        end
-        
-        for i = 1, sz do
-            local pdjg = true
-            for v = 4, #qmnb do
-                local pysz = {}
-                pysz[1] = {}
-                pysz[1].address = sl[i].address + qmnb[v]["offset"]
-                pysz[1].flags = qmnb[v]["type"]
-                local szpy = gg.getValues(pysz)
-                local pdpd = qmnb[v]["lv"] .. ";" .. szpy[1].value
-                local szpd = split(pdpd, ";")
-                local tzszpd = szpd[1]
-                local pyszpd = szpd[2]
-                
-                if tzszpd ~= pyszpd then
-                    pdjg = false
-                    break
-                end
-            end
-            
-            if pdjg then
-                xgxc(sl[i].address, qmxg)
-            end
-        end
-    end
-end
-function SearchWrite(Search, Write, Type)
-    gg.clearResults()
-    gg.setVisible(false)
-    gg.searchNumber(Search[1][1], Type)
-    
-    local count = gg.getResultCount()
-    local result = gg.getResults(count)
-    gg.clearResults()
-    
-    local data = {}
-    local base = Search[1][2]
-    
-    if count > 0 then
-        for k = 2, #Search do
-            local tmp = {}
-            local offset = Search[k][2] - base
-            local num = Search[k][1]
-            
-            for i, v in ipairs(result) do
-                tmp[#tmp+1] = {}
-                tmp[#tmp].address = v.address + offset
-                tmp[#tmp].flags = v.flags
-            end
-            
-            tmp = gg.getValues(tmp)
-            
-            for i, v in ipairs(tmp) do
-                if tostring(v.value) ~= tostring(num) then
-                    result[i].isUseful = false
-                end
-            end
-        end
-        
-        for i, v in ipairs(result) do
-            if v.isUseful then
-                data[#data+1] = v.address
-            end
-        end
-        
-        if #data > 0 then
-            local t = {}
-            local base = Search[1][2]
-            
-            for i = 1, #data do
-                for k, w in ipairs(Write) do
-                    local offset = w[2] - base
-                    t[#t+1] = {}
-                    t[#t].address = data[i] + offset
-                    t[#t].flags = Type
-                    t[#t].value = w[1]
-                    
-                    if w[3] == true then
-                        local item = {}
-                        item[#item+1] = t[#t]
-                        item[#item].freeze = true
-                        gg.addListItems(item)
-                    end
-                end
-            end
-            
-            gg.setValues(t)
-            gg.addListItems(t)
-            return true
-        else
-            return false
-        end
-    else
-        return false
-    end
-end
- 
-           function split(A0_2269, A1_2270)
-    for _FORV_6_ in (A0_2269 .. A1_2270):gmatch(_UPVALUE0_("282e2d29") .. A1_2270) do
-      table.insert({}, _FORV_6_)
-    end 
- 
-    return {}
-  end 
- 
-  
-  function setValuesOrFreeze(A0_2271, A1_2272)
-    local L2_2273
-    L2_2273 = {}
-    for _FORV_6_ = 1, #A1_2272 do
-      if A1_2272[_FORV_6_].freeze then
-        table.insert(L2_2273, {address = A0_2271 + A1_2272[_FORV_6_].offset, flags = A1_2272[_FORV_6_].type, value = A1_2272[_FORV_6_].value, ["freeze"] = A1_2272[_FORV_6_].freeze})
-      else
-gg.setValues({{address = A0_2271 + A1_2272[_FORV_6_].offset, flags = A1_2272[_FORV_6_].type, value = A1_2272[_FORV_6_].value, ["freeze"] = A1_2272[_FORV_6_].freeze}})
-      end 
- 
-    end 
- 
-    if #L2_2273 > 0 then
-      gg.addListItems(L2_2273)
-    end 
- 
-  end 
- 
-  
-  function xqmnb(A0_2274)
-    gg["clearResults"]()
-    gg["setRanges"](A0_2274[1].memory)
-    gg["searchNumber"](A0_2274[3].value, A0_2274[3].type)
-    if gg.getResultCount() == 0 then
-      return
-    end 
- 
-    gg["refineNumber"](A0_2274[3].value, A0_2274[3].type)
-    if gg.getResultCount() == 0 then
-      return
-    end 
- 
-    for _FORV_6_ = 1, #gg["getResults"](math.min(gg.getResultCount(), 10000)) do
-      for _FORV_11_ = 4, #A0_2274 do
-        if true and split(A0_2274[_FORV_11_].lv .. ";" .. gg.getValues({{address = gg["getResults"](math.min(gg.getResultCount(), 10000))[_FORV_6_].address + A0_2274[_FORV_11_].offset, flags = A0_2274[_FORV_11_].type}})[1].value, ";")[1] ~= split(A0_2274[_FORV_11_].lv .. ";" .. gg.getValues({{address = gg["getResults"](math.min(gg.getResultCount(), 10000))[_FORV_6_].address + A0_2274[_FORV_11_].offset, flags = A0_2274[_FORV_11_].type}})[1].value, ";")[2] then
-        end 
- 
-      end 
- 
-      if false then
-        setValuesOrFreeze(gg["getResults"](math.min(gg.getResultCount(), 10000))[_FORV_6_].address, qmxg)
-      end 
- 
-    end 
- 
-  end 
- 
-  
-  function searchWrite(A0_2275, A1_2276, A2_2277)
-    gg["clearResults"]()
-    gg["searchNumber"](A0_2275[1][1], A2_2277)
-    if gg.getResultCount() == 0 then
-      return false
-    end 
- 
-    for _FORV_9_, _FORV_10_ in ipairs((gg["getResults"](math.min(gg.getResultCount(), 10000)))) do
-      _FORV_10_.isUseful = true
-    end 
- 
-    for _FORV_9_ = 2, #A0_2275 do
-      for _FORV_14_, _FORV_15_ in ipairs((gg["getResults"](math.min(gg.getResultCount(), 10000)))) do
-        if _FORV_15_.isUseful and tostring(gg.getValues({{address = _FORV_15_.address + (A0_2275[_FORV_9_][2] - A0_2275[1][2]), flags = _FORV_15_.flags}})[1].value) ~= tostring(A0_2275[_FORV_9_][1]) then
-          _FORV_15_.isUseful = false
-        end 
- 
-      end 
- 
-    end 
- 
-    for _FORV_9_, _FORV_10_ in ipairs((gg["getResults"](math.min(gg.getResultCount(), 10000)))) do
-      if _FORV_10_.isUseful then
-        table.insert({}, _FORV_10_.address)
-      end 
- 
-    end 
- 
-    if #{} > 0 then
-      for _FORV_10_, _FORV_11_ in ipairs({}) do
-        for _FORV_15_, _FORV_16_ in ipairs(A1_2276) do
-          if _FORV_16_[3] then
-    gg.addListItems({{address = _FORV_11_ + (_FORV_16_[2] - A0_2275[1][2]), flags = A2_2277, value = _FORV_16_[1], ["freeze"] = true}})
-          end 
- 
-          table.insert({}, {address = _FORV_11_ + (_FORV_16_[2] - A0_2275[1][2]), flags = A2_2277, value = _FORV_16_[1], ["freeze"] = true})
-        end 
- 
-      end 
- 
-      gg.setValues({})
-      gg.addListItems({})
-    else
-      return false
-    end 
- 
-  end 
- 
-  
-  function setvalue(A0_2278, A1_2279, A2_2280)
-    local L3_2281
-    L3_2281 = {}
-    L3_2281[1] = {}
-    L3_2281[1].address = A0_2278
-    L3_2281[1].flags = A1_2279
-    L3_2281[1].value = A2_2280
-    gg.setValues(L3_2281)
-  end 
 
-
-    
-function xgxc(A0_27, A1_28)
-
-local L2_29, L3_30, L4_31, L5_32
-L2_29 = 1
-L3_30 = #A1_28
-for _FORV_5_ = 1, #A1_28 do 
-xgpy = A0_27 + A1_28[_FORV_5_].offset
-xglx = A1_28[_FORV_5_].type
-xgsz = A1_28[_FORV_5_].value
-gg.setValues({
-[1] = {
-address = xgpy,
-flags = xglx,
-value = xgsz
-}
-})
-xgsl = xgsl + 1
-end 
-
-end 
-
-
-function xqmnb(A0_33)
-gg.clearResults()
-gg.setRanges(A0_33[1].memory)
-gg.searchNumber(A0_33[3].value, A0_33[3].type)
-if gg.getResultCount() == 0 then
-gg.toast(A0_33[2].name .. " Active")
-else
-gg.refineNumber(A0_33[3].value, A0_33[3].type)
-gg.refineNumber(A0_33[3].value, A0_33[3].type)
-gg.refineNumber(A0_33[3].value, A0_33[3].type)
-if gg.getResultCount() == 0 then
-gg.toast(A0_33[2].name .. " Active")
-else
-sl = gg.getResults(999999)
-sz = gg.getResultCount()
-xgsl = 0
-if 999999 < sz then
-sz = 999999
-end 
-
-for _FORV_4_ = 1, sz do 
-pdsz = true
-for _FORV_8_ = 4, #A0_33 do 
-if pdsz == true then
-pysz = {}
-pysz[1] = {}
-pysz[1].address = sl[_FORV_4_].address + A0_33[_FORV_8_].offset
-pysz[1].flags = A0_33[_FORV_8_].type
-szpy = gg.getValues(pysz)
-pdpd = A0_33[_FORV_8_].lv .. ";" .. szpy[1].value
-szpd = split(pdpd, ";")
-tzszpd = szpd[1]
-pyszpd = szpd[2]
-if tzszpd == pyszpd then
-pdjg = true
-pdsz = true
-else
-pdjg = false
-pdsz = false
-end 
-
-end 
-
-end 
-
-if pdjg == true then
-szpy = sl[_FORV_4_].address
-xgxc(szpy, qmxg)
-xgjg = true
-end 
-
-end 
-
-if xgjg == true then
-gg.toast(A0_33[2].name .. " " .. xgsl)
-else
-gg.toast(A0_33[2].name .. " Xong")
-end 
-
-end 
-
-end 
-
-end 
-
-
-
-gg.sleep("100")
-LuaLibraryTool = -1
-function HOME()
-MENU = gg.choice({
-        "🔸𝗕𝗬𝗣𝗔𝗦𝗦 𝗔𝗡𝗧𝗜 𝗖𝗛𝗘𝗔𝗧🔸", --1
-        "🔸𝗕𝗬𝗣𝗔𝗦𝗦 𝗔𝗡𝗧𝗜 𝗥𝗘𝗣𝗢𝗥𝗧🔸", --2
-        "🔸𝗕𝗬𝗣𝗔𝗦𝗦 𝗟𝗢𝗕𝗕𝗬🔸", --3
-        "🔸𝗕𝗬𝗣𝗔𝗦𝗦 𝗟𝗢𝗚𝗢🔸", --4
-        "⬇️🅸🅽 🅶🅰🅼🅴 🅼🅴🅽🆄 ⬇️", --5
-        "🔸𝗠𝗔𝗣𝗛𝗔𝗖𝗞🔸", --5
-        "🔸𝗠𝗔𝗣𝗛𝗔𝗖𝗞 𝗡𝗢 𝗜𝗖𝗢𝗡🔸", --6
-        "🔸𝗙𝗜𝗫 𝗚𝗥𝗔𝗦𝗦🔸", --7
-        "🔸𝗗𝗥𝗢𝗡𝗘 𝗩𝗜𝗘𝗪🔸", --8
-        "🔸LEAVE SCRIPT 🔸" --EndScript
-}, nil, "𝐈𝐓𝐀𝐂𝐇𝐈 𝐌𝐎𝐃𝐙 𝐌𝐋𝐁𝐁 𝐕𝐈𝐏\n𝐕𝐞𝐫𝐬𝐢𝐨𝐧 = 𝟏.𝟖.𝟗𝟐.𝟗𝟕𝟎𝟐\n𝐏𝐚𝐜𝐤𝐚𝐠𝐞 𝐍𝐚𝐦𝐞 = 𝐌𝐨𝐛𝐢𝐥𝐞 𝐋𝐞𝐠𝐞𝐧𝐝 𝐔𝐧𝐢𝐭𝐲𝐊𝐢𝐥𝐥𝐬𝐌𝐞\n𝐒𝐭𝐚𝐭𝐮𝐬 = 𝐒𝐚𝐟𝐞")
-if MENU == nil then
+function instructions()
+  if ISA == false then -- if true then 32 bit else 64 bit
+    hexConvert = 0x100000000
+    dataType = 4
+    cdOffsetSmall = 0xC
+    cdOffsetBig =  0xB58
+    cbOffsetSmall = 0x1C
+    anonSpeedOffsetSmall = 0xE4
+    anonSpeedOffsetBig = 0xEC
+    anonGroupSearchOffset = 0x30
   else
-   if MENU == 1 then --choice
-      MENU1()
-     end
-   if MENU == 2 then --choice
-      MENU2()
-     end
-   if MENU == 3 then --choice
-      MENU3()
-     end
-   if MENU == 4 then --choice
-      MENU4()
-     end
-     if MENU == 5 then --choice
-      MENU5()
-     end
-     if MENU == 6 then --choice
-      MENU6()
-     end
-     if MENU == 7 then --choice
-      MENU7()
-     end
-     if MENU == 8 then --choice
-      MENU8()
-     end
-     if MENU == 9 then --choice
-      MENU9()
-     end
-    if MENU == 10 then --EndScript
-      LOBBY()
-     end
-   end
-  LuaLibraryTool = -1
+    hexConvert = 0x0
+    dataType = 32
+    cdOffsetSmall = 0x18
+    cdOffsetBig = 0x16B0
+    cbOffsetSmall = 0x38
+    cbOffsetBig = 0x48
+    anonSpeedOffsetSmall = 0xF4
+    anonSpeedOffsetBig = 0xFC
+    anonGroupSearchOffset = 0x44
+  end
+end
+function unityVersion()
+  gg.searchNumber(":Expected version: ", gg.TYPE_BYTE, gg.setRanges(16384))
+  if gg.getResultsCount() == 0 then
+    gg.alert("This game is not made with Unity, fuzzy will be automatically activated!")
+    gg.alert("Make sure your game is open, don't hide it on the background!")
+    randomized()
+    os.exit()
+  else
+    local count = gg.getResultsCount()
+    local results = gg.getResults(count)
+    values = {}
+    for i = 18, count, 18 do
+      local resultAddress = results[i].address
+      for j = 1, 7 do
+        values[#values + 1] = {address = resultAddress + j, flags = gg.TYPE_BYTE}
+      end
+      values = gg.getValues(values)
+    end
+    
+    local str = ''
+    for i, v in ipairs(values) do
+      str = str .. string.char(v.value & 0xFF)
+    end
+    gg.clearResults()
+    if values[1].value <= 0x35 and values[2].value == 0x2E and values[3].value <= 0x35 then -- unity versions 5.5 or below
+      gg.alert("Unity version "..str..",This version is to old. Use Speedhack through Cb or Fuzzy")
+      anonGroupSearchOffset = 0x3C
+      cbOffsetSmall = 0x24
+      anonSpeedOffsetSmall = 0xBC
+    end
+    gg.clearResults()
+  end
 end
 
-function MENU1() --choice
-gg.toast("𝐀𝐍𝐓𝐈 𝐂𝐇𝐄𝐀𝐓 𝐀𝐂𝐓𝐈𝐕𝐀𝐓𝐄")
+function finalSpeedResult()
+  resultsCount = gg.getResultsCount()
+  local values = gg.getResults(resultsCount)
+  local results = {}
+  local speed = {}
+  for b = 1, #values do
+    local loop = 0x0
+    for i = 1, 70 do
+      results[#results + 1] = {address = values[b].address + loop, flags = gg.TYPE_FLOAT}
+      loop = loop + 4
+    end
+  end
+  results = gg.getValues(results)
+  for i, v in ipairs(results) do
+    if v.value == 1 then
+      speed[#speed +1] = {address = v.address, flags = v.flags, name = "Speed"}
+      break
+    end
+  end
+  
+  if #speed ~= 0 then
+    gg.toast("Time.timeScale found")
+    gg.addListItems(speed)
+    gg.clearResults()
+    gg.alert("𝗠𝗴𝘂𝗯𝘀 𝗦𝗽𝗲𝗲𝗱 𝗛𝗮𝗰𝗸 𝗜𝘀 𝗜𝗻 𝗧𝗵𝗲 𝗦𝗮𝘃𝗲 𝗟𝗶𝘀𝘁 𝗘𝗱𝗶𝘁 𝗧𝗵𝗲 𝗦𝗽𝗲𝗲𝗱 𝗕𝘆 𝗙𝗹𝗼𝗮𝘁🔥")
+    os.exit()
+  end
 end
 
-function MENU2() --choice
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-gg.setRanges(gg.REGION_CODE_APP)
-gg.searchNumber(":cheat", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1)
-gg.getResults(9999)
-gg.setValues({ -- table(d920f3c)
-	[1] = { -- table(c3cf4c5)
-		['address'] = 3171953268.0,
-		['flags'] = 4, -- gg.TYPE_DWORD
-		['value'] = 10,
-	},
-})
-gg.searchNumber(":SDKReport", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1)
-gg.getResults(9999)
-gg.setValues({ 
-	[1] = { 
-		['address'] = 3171953268.0,
-		['flags'] = 4, 
-		['value'] = 10,
-	},
-})
+function startxa()
+  gg.clearResults()
+  gg.setRanges(gg.REGION_CODE_APP)
+  gg.searchNumber("h 6A 6F 79 73 74 69 63 6B 20 31 36 20 62 75 74 74 6F 6E 20 31 39")
+  if gg.getResultsCount() == 0 then
+    gg.alert("Search not found, try Speedhack Cb or Fuzzy")
+    start()
+  else
+    local a = gg.getResults(1)
+    gg.clearResults()
+    gg.setRanges(gg.REGION_C_DATA | gg.REGION_OTHER)
+    gg.searchNumber(a[1].address, dataType)
+    resultsCount = gg.getResultsCount()
+    a = gg.getResults(1)
+    gg.clearResults()
+    gg.setRanges(gg.REGION_ANONYMOUS | gg.REGION_C_ALLOC | gg.REGION_OTHER)
+    gg.searchNumber(a[1].address + cdOffsetSmall, dataType)
+    if gg.getResultsCount() ~= 1 then 
+      gg.clearResults()
+      gg.setRanges(gg.REGION_ANONYMOUS | gg.REGION_C_ALLOC | gg.REGION_OTHER)
+      gg.searchNumber(a[1].address - cdOffsetBig, dataType)
+    end
+    finalSpeedResult()
+  end
+end
+
+function filterCb()
+  local b = {}
+  gg.clearResults()
+  gg.setRanges(gg.REGION_ANONYMOUS | gg.REGION_C_ALLOC | gg.REGION_OTHER)
+  gg.searchNumber("h 00 00 80 3F CD CC 4C 3E 00 00 00 41 00 00 C8 42 00 00 B4 43 0A D7 23 3C CD CC 4C 3E 00 00 40 3F 00 00 00")
+  if gg.getResultsCount() == 0 then
+    gg.searchNumber("-9.81000041962", gg.TYPE_FLOAT)
+    cb_nothingFound()
+    resultsCount = gg.getResultsCount()
+    local t = gg.getResults(resultsCount)
+    for i, v in ipairs(t) do
+      v.address = v.address + 0xC
+    end
+    gg.loadResults(t)
+    gg.refineNumber("1", gg.TYPE_FLOAT)
+    cb_nothingFound()
+    resultsCount = gg.getResultsCount()
+    b = gg.getResults(resultsCount)
+  elseif gg.getResultsCount() ~= 0 then
+    gg.refineNumber("h 00 00 80 3F", gg.TYPE_FLOAT)
+    cb_nothingFound()
+    resultsCount = gg.getResultsCount()
+    local a = gg.getResults(resultsCount)
+    for i, v in ipairs(a) do
+      v.flags = gg.TYPE_FLOAT
+    end
+    b = gg.getValues(a)
+  end
+  return b
+end
+function startcb()
+  local fakeSpeedPointers = {}
+  local b = filterCb()
+  for i, v in ipairs(b) do
+    if v.value == 1 then
+      fakeSpeedPointers[#fakeSpeedPointers + 1] = {address = v.address - anonGroupSearchOffset, flags = gg.TYPE_FLOAT}
+      fakeSpeedPointers[#fakeSpeedPointers + 1] = {address = v.address - 0x48, flags = gg.TYPE_FLOAT}
+      fakeSpeedPointers[#fakeSpeedPointers + 1] = {address = v.address - 0x44, flags = gg.TYPE_FLOAT}
+    end
+  end
+  gg.setRanges(gg.REGION_C_BSS | gg.REGION_OTHER | gg.REGION_ANONYMOUS | gg.REGION_C_ALLOC)
+  gg.loadResults(fakeSpeedPointers)
+  gg.searchPointer(0)
+  resultsCount = gg.getResultsCount()
+  local offsetStart = gg.getResults(resultsCount)
+  for i, v in ipairs(offsetStart) do
+    v.address = v.address - cbOffsetSmall
+  end
+  local valu = gg.getValues(offsetStart)
+  for i, v in ipairs(valu) do
+    if ISA == false then
+      v.address = v.value&0xFFFFFFFF
+    else
+      v.address = v.value
+    end
+  end
+  gg.loadResults(valu)
+  finalSpeedResult()
+  gg.alert("Mgubs Speedhack is In The save list edit the speed by float🔥")
+end
+
+
+function randomized()
+  gg.clearResults()
+  gg.setRanges(gg.REGION_ANONYMOUS | gg.REGION_C_ALLOC | gg.REGION_OTHER)
+  gg.searchFuzzy('0', gg.TYPE_FLOAT, gg.SIGN_FUZZY_GREATER)
+  for i = 1 , 50 do
+    gg.searchFuzzy('0', gg.TYPE_FLOAT, gg.SIGN_FUZZY_GREATER)
+    gg.refineNumber('0.01~6', gg.TYPE_FLOAT)
+    gg.sleep(50)                                                   
+  end
+  resultsCount = gg.getResultsCount()
+  secondResults = gg.getResults(resultsCount)
+  local addTables = {}
+  local speed = {}
+  for i = 1, #secondResults do
+    local loops = 0x0
+    for b = 1, 200 do
+      addTables[#addTables + 1] = {address = secondResults[i].address + loops, flags = gg.TYPE_FLOAT}
+      addTables[#addTables + 1] = {address = secondResults[i].address - loops, flags = gg.TYPE_FLOAT}
+      loops = loops + 0x4
+    end
+  end
+  addTables = gg.getValues(addTables)
+  for i, v in ipairs (addTables) do
+    if v.value == 1 then
+      speed[#speed +1] = {address = v.address, flags = v.flags, name = "Speed"}
+    end
+  end
+  if #speed ~= 0 then
+    gg.toast("Possible speed values found(not guaranteed)")
+    gg.addListItems(speed)
+    gg.clearResults()
+  else
+    gg.toast("Nothing found with Fuzzy, shuttind down script")
+  end
+  os.exit()
+end
+
+local functLoop = true
+function start()
+  if functLoop == true then
+    instructions()
+    unityVersion()
+    functLoop = false
+  end
+end
+
+---------
+
+function Drone()
+dropview = true
+function 
+split(szFullString, szSeparator) 
+local nFindStartIndex = 1 local nSplitIndex = 1 local nSplitArray 
+= {} while true do local nFindLastIndex = string.find 
+(szFullString, szSeparator, nFindStartIndex) 
+if not nFindLastIndex then nSplitArray[nSplitIndex]
+ = string.sub(szFullString, nFindStartIndex, string.len (szFullString))
+ break end nSplitArray[nSplitIndex]
+ = string.sub (szFullString, nFindStartIndex, nFindLastIndex - 1) nFindStartIndex 
+= nFindLastIndex + string.len (szSeparator) nSplitIndex 
+= nSplitIndex + 1 end return 
+nSplitArray end function 
+xgxc(szpy, qmxg) for x = 1, #(qmxg) do xgpy = szpy + qmxg[x]["offset"] xglx 
+= qmxg[x]["type"] xgsz = qmxg[x]["value"] xgdj = qmxg[x]["freeze"] if xgdj 
+== nil or xgdj == "" then gg.setValues({[1] = {address = xgpy, flags = xglx, value 
+= xgsz}}) else gg.addListItems({[1] = {address = xgpy, flags = xglx, freeze
+ = xgdj, value = xgsz}}) end xgsl = xgsl + 1 xgjg = true end end function
+ xqmnb(qmnb)
 gg.clearResults()
-gg.searchNumber(":strTraceLog", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1)
-gg.getResults(9999)
-gg.setValues({ 
-	[1] = { 
-		['address'] = 3171953268.0,
-		['flags'] = 4, 
-		['value'] = 10,
-	},
-})
 gg.clearResults()
-gg.searchNumber(":GetTraceLog", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1)
-gg.getResults(9999)
-gg.setValues({ 
-	[1] = { 
-		['address'] = 3171953268.0,
-		['flags'] = 4, 
-		['value'] = 10,
-	},
+gg.clearList()
+gg.clearList() gg.clearResults() gg.setRanges(qmnb[1]["memory"])
+ gg.searchNumber(qmnb[3]["value"], qmnb[3]["type"]) if gg.getResultCount() 
+== 0 then else gg.refineNumber(qmnb[3]["value"], qmnb[3]["type"]) gg.refineNumber(qmnb[3]["value"], qmnb[3]["type"]) gg.refineNumber(qmnb[3]["value"], qmnb[3]["type"]) if gg.getResultCount() == 0 then else sl = gg.getResults(999999) sz = gg.getResultCount() xgsl = 0 if sz > 999999 then sz = 999999 end for i = 1, sz do pdsz = true for v = 4, #(qmnb) do if pdsz == true then pysz = {} pysz[1] = {} pysz[1].address = sl[i].address + qmnb[v]["offset"] pysz[1].flags = qmnb[v]["type"] szpy = gg.getValues(pysz) pdpd = qmnb[v]["lv"] .. ";" .. szpy[1].value szpd = split(pdpd, ";") tzszpd = szpd[1] pyszpd = szpd[2] if tzszpd == pyszpd then pdjg = true pdsz = true else pdjg = false pdsz = false end end end if pdjg == true then szpy = sl[i].address xgxc(szpy, qmxg) end end if xgjg == true then else end end end end function SearchWrite(Search, Write, Type) gg.clearResults() gg.setVisible(false) gg.searchNumber(Search[1][1], Type) local count = gg.getResultCount() local result = gg.getResults(count) gg.clearResults() local data = {} local base = Search[1][2] if (count > 0) then for i, v in ipairs(result) do v.isUseful = true end for k=2, #Search do local tmp = {} local offset = Search[k][2] - base local num = Search[k][1] for i, v in ipairs(result) do tmp[#tmp+1] = {} tmp[#tmp].address = v.address + offset tmp[#tmp].flags = v.flags end tmp = gg.getValues(tmp) for i, v in ipairs(tmp) do if ( tostring(v.value) ~= tostring(num) ) then result[i].isUseful = false end end end for i, v in ipairs(result) do if (v.isUseful) then data[#data+1] = v.address end end if (#data > 0) then local t = {} local base = Search[1][2] for i=1, #data do for k, w in ipairs(Write) do offset = w[2] - base t[#t+1] = {} t[#t].address = data[i] + offset t[#t].flags = Type t[#t].value = w[1] if (w[3] == true) then local item = {} item[#item+1] = t[#t] item[#item].freeze = true gg.addListItems(item) end end end gg.setValues(t) gg.addListItems(t) else return false end else return false end end
+
+UBED = gg.prompt({
+" \nᴅʀᴏɴᴇ ᴠɪᴇᴡ [0;12]", 
+"ʙᴀᴄᴋ", 
+},{
+},{
+"number",
+"checkbox", 
 })
-gg.clearResults()
-gg.searchNumber(":mainTracePath", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1)
-gg.getResults(9999)
-gg.setValues({ 
-	[1] = { 
-		['address'] = 3171953268.0,
-		['flags'] = 4, 
-		['value'] = 10,
-	},
-})
-gg.clearResults()
-gg.searchNumber(":md5", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1)
-gg.getResults(9999)
-gg.setValues({ 
-	[1] = { 
-		['address'] = 3171953268.0,
-		['flags'] = 4, 
-		['value'] = 10,
-	},
-})
-gg.clearResults()
-gg.searchNumber(":MD5", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1)
-gg.getResults(9999)
-gg.setValues({ 
-	[1] = { 
-		['address'] = 3171953268.0,
-		['flags'] = 4, 
-		['value'] = 10,
-	},
-})
-gg.clearResults()
-gg.searchNumber(":kill", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1)
-gg.getResults(9999)
-gg.setValues({ 
-	[1] = { 
-		['address'] = 3171953268.0,
-		['flags'] = 4, 
-		['value'] = 10,
-	},
-})
-gg.clearResults()
-gg.searchNumber(":Cache", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1)
-gg.getResults(9999)
-gg.setValues({ 
-	[1] = { 
-		['address'] = 3171953268.0,
-		['flags'] = 4, 
-		['value'] = 10,
-	},
-})
-gg.clearResults()
-gg.searchNumber(":anti", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1)
-gg.getResults(9999)
-gg.setValues({ 
-	[1] = { 
-		['address'] = 3171953268.0,
-		['flags'] = 4, 
-		['value'] = 10,
-	},
-})
-gg.clearResults()
-gg.searchNumber(":login", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1)
-gg.getResults(9999)
-gg.setValues({ 
-	[1] = { 
-		['address'] = 3171953268.0,
-		['flags'] = 4, 
-		['value'] = 10,
-	},
-})
-gg.clearResults()
-gg.searchNumber(":terminate", gg.TYPE_WORD, false, gg.SIGN_EQUAL, 0, -1)
-gg.getResults(9999)
-gg.setValues({ 
-	[1] = { 
-		['address'] = 3171953268.0,
-		['flags'] = 4, 
-		['value'] = 10,
-	},
-})
-gg.setValues({ -- table(b1c1716)
-	[1] = { -- table(b02b897)
-		['address'] = 0x7fff3718dc1c,
-		['flags'] = 4, -- gg.TYPE_DWORD
-		['value'] = 'h C0 03 5F D6',
-	},
-}) 
 
-gg.setValues({ -- table(6196323)
-	[1] = { -- table(5161020)
-		['address'] = 0x7fff3718deac,
-		['flags'] = 4, -- gg.TYPE_DWORD
-		['value'] = 'h C0 03 5F D6',
-	},
-}) 
-
-gg.setValues({ -- table(5f6139b)
-	[1] = { -- table(8a1c338)
-		['address'] = 0x7fff3718e438,
-		['flags'] = 4, -- gg.TYPE_DWORD
-		['value'] = 'h C0 03 5F D6',
-	},
-}) 
-
-gg.setValues({ -- table(5bf198b)
-	[1] = { -- table(8a86a68)
-		['address'] = 0x7fff3718ef78,
-		['flags'] = 4, -- gg.TYPE_DWORD
-		['value'] = 'h C0 03 5F D6',
-	},
-}) 
-
-gg.setValues({ -- table(cff3d98)
-	[1] = { -- table(901b9f1)
-		['address'] = 0x7fff3718f560,
-		['flags'] = 4, -- gg.TYPE_DWORD
-		['value'] = 'h C0 03 5F D6',
-	},
-}) 
-
-gg.setValues({ -- table(93cc8)
-	[1] = { -- table(f240161)
-		['address'] = 0x7fff3718fa18,
-		['flags'] = 4, -- gg.TYPE_DWORD
-		['value'] = 'h C0 03 5F D6',
-	},
-}) 
-
-gg.setValues({ -- table(49d2d3)
-	[1] = { -- table(fdd3e10)
-		['address'] = 0x7fff371904a8,
-		['flags'] = 4, -- gg.TYPE_DWORD
-		['value'] = 'h C0 03 5F D6',
-	},
-}) 
-
-gg.setValues({ -- table(582bf28)
-	[1] = { -- table(fd9c441)
-		['address'] = 0x7fff37190b44,
-		['flags'] = 4, -- gg.TYPE_DWORD
-		['value'] = 'h C0 03 5F D6',
-	},
-}) 
-
-gg.setValues({ -- table(6784258)
-	[1] = { -- table(d7b3fb1)
-		['address'] = 0x7fff37191030,
-		['flags'] = 4, -- gg.TYPE_DWORD
-		['value'] = 'h C0 03 5F D6',
-	},
-}) 
-
-gg.setValues({ -- table(a0532a3)
-	[1] = { -- table(6b669a0)
-		['address'] = 0x7fff371916ac,
-		['flags'] = 4, -- gg.TYPE_DWORD
-		['value'] = 'h C0 03 5F D6',
-	},
-}) 
-
-gg.setValues({ -- table(fc3ccb8)
-	[1] = { -- table(d0e6a91)
-		['address'] = 0x7fff37191dc8,
-		['flags'] = 4, -- gg.TYPE_DWORD
-		['value'] = 'h C0 03 5F D6',
-	},
-}) 
-
-gg.setValues({ -- table(63390a6)
-	[1] = { -- table(6b5ae7)
-		['address'] = 0x7fff37191eac,
-		['flags'] = 4, -- gg.TYPE_DWORD
-		['value'] = 'h C0 03 5F D6',
-	},
-}) 
-
-gg.setValues({ -- table(9d08571)
-	[1] = { -- table(cd76f56)
-		['address'] = 0x7fff37192140,
-		['flags'] = 4, -- gg.TYPE_DWORD
-		['value'] = 'h C0 03 5F D6',
-	},
-}) 
+if UBED == nil then else
+if UBED[1] == "0" then
 gg.clearResults()
 gg.clearResults()
 gg.clearList()
 gg.clearList()
-gg.alert("𝐁𝐘𝐏𝐀𝐒𝐒 𝐋𝐎𝐁𝐁𝐘 𝐀𝐂𝐓𝐈𝐕𝐀𝐓𝐄")
+elseif UBED[1] == "1" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "1084227584",offset = "-128",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "2" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "1092616192",offset = "-128",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "3" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "1095712192",offset = "-128",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "4" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "1097859072",offset = "-128",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "5" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "1101004800",offset = "-128",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "6" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "1103626240",offset = "-128",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "7" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "1106247680",offset = "-128",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "8" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "1108082688",offset = "-128",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "9" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "1109393408",offset = "-128",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "10" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "1110704128",offset = "-128",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "11" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "1112014848",offset = "-128",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "12" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "1112512598",offset = "-128",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "1" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "-1080452710",offset = "-144",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "2" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "-1078774989",offset = "-144",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "3" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "-1077097267",offset = "-144",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "4" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "-1075419546",offset = "-144",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "5" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "-1073741824",offset = "-144",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "6" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "-1072902963",offset = "-144",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "7" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "-1072064102",offset = "-144",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "8" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "-1071225242",offset = "-144",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "10" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "-1070386381",offset = "-144",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "11" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "-1069547520",offset = "-144",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
+elseif UBED[1] == "12" then
+qmnb = {{memory = "4"},{name = ""},{value = "4294968312.0",type = "64"},{lv = "1081006571",offset = "-168",type = "32"}}
+qmxg = {{value = "-1060426515",offset = "-144",type = "4"}}
+xqmnb(qmnb)
+gg.clearResults()
+gg.clearResults()
+gg.clearList()
+gg.clearList()
 end
 
-function MENU3() --choice
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x5c1539c, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x5c1539c + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x2f9d390, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x2f9d390 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x2f9d394, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x2f9d394 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x5c15398, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x5c15398 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x57EBF28, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x57EBF28 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x57E7D90, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x57E7D90 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D600, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D600 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D608, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D608 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D618, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D618 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D620, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D620 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D630, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D630 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D638, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D638 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D640, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D640 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D648, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D648 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D650, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D650 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D660, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D660 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D668, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D668 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D678, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D678 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D680, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D680 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D690, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D690 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D698, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D698 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D6A8, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D6A8 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D6B0, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D6B0 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D6C0, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D6C0 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D6C8, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D6C8 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-local LibStart = gg.getRangesList('liblogic.so')[1].start
-local values = {
-    { address = LibStart + 0x12D6D8, value = 'h C0 03 5F D6', flags = 4 },
-    { address = LibStart + (0x12D6D8 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
-}
-for _, v in ipairs(values) do
-    gg.setValues({ v })
-end
-gg.alert("𝐀𝐍𝐓𝐈 𝐂𝐇𝐄𝐀𝐓 𝐀𝐂𝐓𝐈𝐕𝐀𝐓𝐄")
-end
+if UBED[2] == true then return menu end end HOMEDM = -1 end
 
-function MENU4()
-HexPatches.ITACHI("libnativelogin.so",0xb9e3c,"h00 00 80 D2 C0 03 5F D6",32);
-HexPatches.ITACHI("libnativelogin.so",0xba1e4,"h00 00 80 D2 C0 03 5F D6",32);
-HexPatches.ITACHI("libnativelogin.so",0xba2ac,"h00 00 80 D2 C0 03 5F D6",32);
-HexPatches.ITACHI("libnativelogin.so",0x2b66c,"h00 00 80 D2 C0 03 5F D6",32);
-HexPatches.ITACHI("libnativelogin.so",0x2b6ec,"h00 00 80 D2 C0 03 5F D6",32);
-HexPatches.ITACHI("libnativelogin.so",0x2b7c4,"h00 00 80 D2 C0 03 5F D6",32);
-gg.alert("𝐀𝐍𝐓𝐈 𝐂𝐇𝐄𝐀𝐓 𝐀𝐂𝐓𝐈𝐕𝐀𝐓𝐄")
-end
-
-function MENU5()
-end
-
-function MENU6()
+function mhON()
 io.open("LiblogicRequirment.lua","w+"):write(gg.makeRequest("https://pastebin.com/raw/MZe46502").content):close()
 require('LiblogicRequirment')
 Il2cpp({il2cppVersion = 27})
@@ -1198,7 +785,8 @@ for k ,v in ipairs(search[1]) do
             hx1 = (tostring(currentValue[1].value))
             end
             end
-    gg.toast("𝐌𝐀𝐏𝐇𝐀𝐂𝐊 𝐀𝐂𝐓𝐈𝐕𝐀𝐓𝐄")
+    mhyesTOGGLE = true
+    gg.toast("Maphack Enabled")
     local a = h1
     local libTarget = gg.getRangesList("liblogic.so")
     for _, name in ipairs(libTarget) do
@@ -1211,7 +799,75 @@ for k ,v in ipairs(search[1]) do
     end
 end
 
-function MENU7()
+
+function mhOFF()
+    mhyesTOGGLE = false
+    gg.toast("Maphack Disabled")
+    local a = h1
+    local aa = hx1
+    local libTarget = gg.getRangesList("liblogic.so")
+    for _, name in ipairs(libTarget) do
+        if name.state == "Xa" then
+            gg.setValues({
+                {address = name.start + a, flags = gg.TYPE_QWORD, value = aa}
+            })
+            break
+        end
+    end
+end
+
+function mhnoON()
+io.open("LiblogicRequirment.lua","w+"):write(gg.makeRequest("https://pastebin.com/raw/MZe46502").content):close()
+require('LiblogicRequirment')
+Il2cpp({il2cppVersion = 27})
+search = Il2cpp.FindMethods({
+"UpdateEyeLayer",
+})
+for k ,v in ipairs(search[1]) do
+    if v.ClassName == 'ShowEntity' then  ---Class Name 2
+        h2 = "0x"..v.Offset..""
+       end
+       end
+       for _, name in ipairs(libTarget) do
+        if name.state == "Xa" then
+            local b = h2
+            local address = name.start + b
+            local currentValue = gg.getValues({{address = address, flags = gg.TYPE_QWORD}})
+            
+            hx2 = (tostring(currentValue[1].value))
+            end
+            end
+    mhnoTOGGLE = true
+    gg.toast("Maphack No Icon Enabled")
+    local b = h2
+    local libTarget = gg.getRangesList("liblogic.so")
+    for _, name in ipairs(libTarget) do
+        if name.state == "Xa" then
+            gg.setValues({
+                {address = name.start + b, flags = gg.TYPE_QWORD, value = onA}
+            })
+            break
+        end
+    end
+end
+
+function mhnoOFF()
+    mhnoTOGGLE = false
+    gg.toast("Maphack No Icon Disabled")
+    local b = h2
+    local bb = hx2
+    local libTarget = gg.getRangesList("liblogic.so")
+    for _, name in ipairs(libTarget) do
+        if name.state == "Xa" then
+            gg.setValues({
+                {address = name.start + b, flags = gg.TYPE_QWORD, value = bb}
+            })
+            break
+        end
+    end
+end
+
+function mhnovtwoON()
 io.open("LiblogicRequirment.lua","w+"):write(gg.makeRequest("https://pastebin.com/raw/MZe46502").content):close()
 require('LiblogicRequirment')
 Il2cpp({il2cppVersion = 27})
@@ -1247,6 +903,7 @@ for k ,v in ipairs(search[2]) do
             hx2 = (tostring(currentValue[1].value))
             end
             end
+    mhnovtwoTOGGLE = true
     local a = h1
     local b = h2
     local bba = hx1
@@ -1268,7 +925,22 @@ for k ,v in ipairs(search[2]) do
     end
 end
 
-function MENU8()
+function mhnovtwoOFF()
+    mhnovtwoTOGGLE = false
+    local b = h2
+    local bba = hx2
+    local libTarget = gg.getRangesList("liblogic.so")
+    for _, name in ipairs(libTarget) do
+        if name.state == "Xa" then
+            gg.setValues({
+                {address = name.start + b, flags = gg.TYPE_QWORD, value = bba}
+            })
+            break
+        end
+    end
+end
+
+function fixgrassON()
 io.open("LiblogicRequirment.lua","w+"):write(gg.makeRequest("https://pastebin.com/raw/MZe46502").content):close()
 require('LiblogicRequirment')
 Il2cpp({il2cppVersion = 27})
@@ -1289,6 +961,7 @@ for _, name in ipairs(libTarget) do
             hx3 = (tostring(currentValue[1].value))
             end
             end
+    fixgrassTOGGLEtwo = true
     gg.toast("Fix Grass Enabled")
     local c = h3
     local libTarget = gg.getRangesList("liblogic.so")
@@ -1302,26 +975,528 @@ for _, name in ipairs(libTarget) do
     end
 end
 
-function MENU9()
-
+function fixgrassOFF()
+    fixgrassTOGGLEtwo = false
+    gg.toast("Fix Grass Disabled")
+    local c = h3
+    local cc = hx3
+    local libTarget = gg.getRangesList("liblogic.so")
+    for _, name in ipairs(libTarget) do
+        if name.state == "Xa" then
+            gg.setValues({
+                {address = name.start + c, flags = gg.TYPE_QWORD, value = cc}
+            })
+            break
+        end
+    end
 end
 
-function LOBBY() --End Script
-gg.alert("ITACHI MLBB SCRIPT")
-print("Created By Lua Library Tool")
-gg.skipRestoreState()
-  gg.setVisible(true)
-  os.exit()
+function unlockallskinON()
+io.open("LiblogicRequirment.lua","w+"):write(gg.makeRequest("https://pastebin.com/raw/MZe46502").content):close()
+require('LiblogicRequirment')
+Il2cpp({il2cppVersion = 27})
+search = Il2cpp.FindMethods({
+"BLuckyBoyFreeSkin",
+})
+for k ,v in ipairs(search[1]) do
+    if v.ClassName == 'ChooseHeroMgr' then  ---Class Name 2
+        h4 = "0x"..v.Offset..""
+       end
+       end
+       for _, name in ipairs(libTarget) do
+        if name.state == "Xa" then
+            local d = h4
+            local address = name.start + d
+            local currentValue = gg.getValues({{address = address, flags = gg.TYPE_QWORD}})
+            
+            hx4 = (tostring(currentValue[1].value))
+            end
+            end
+    unlockallskinTOGGLE = true
+    gg.toast("Unlock All Skin Enabled")
+    local d = h4
+    local libTarget = gg.getRangesList("liblogic.so")
+    for _, name in ipairs(libTarget) do
+        if name.state == "Xa" then
+            gg.setValues({
+                {address = name.start + d, flags = gg.TYPE_QWORD, value = onA}
+            })
+            break
+        end
+    end
 end
+
+function unlockallskinOFF()
+    unlockallskinTOGGLE = false
+    gg.toast("Unlock All Skin Disabled")
+    local d = h4
+    local dd = hx4
+    local libTarget = gg.getRangesList("liblogic.so")
+    for _, name in ipairs(libTarget) do
+        if name.state == "Xa" then
+            gg.setValues({
+                {address = name.start + d, flags = gg.TYPE_QWORD, value = dd}
+            })
+            break
+        end
+    end
+end
+
+function unlockspellON()
+io.open("LiblogicRequirment.lua","w+"):write(gg.makeRequest("https://pastebin.com/raw/MZe46502").content):close()
+require('LiblogicRequirment')
+Il2cpp({il2cppVersion = 27})
+search = Il2cpp.FindMethods({
+"BCustomRoomFreeSkill",
+})
+for k ,v in ipairs(search[1]) do
+    if v.ClassName == 'ChooseHeroMgr' then  ---Class Name 2
+        h5 = "0x"..v.Offset..""
+       end
+       end
+       for _, name in ipairs(libTarget) do
+        if name.state == "Xa" then
+            local e = h5
+            local address = name.start + e
+            local currentValue = gg.getValues({{address = address, flags = gg.TYPE_QWORD}})
+            
+            hx5 = (tostring(currentValue[1].value))
+            end
+            end
+    unlockspellTOGGLE = true
+    gg.toast("Unlock All Spell Enabled")
+    local e = h5
+    local libTarget = gg.getRangesList("liblogic.so")
+    for _, name in ipairs(libTarget) do
+        if name.state == "Xa" then
+            gg.setValues({
+                {address = name.start + e, flags = gg.TYPE_QWORD, value = onA}
+            })
+            break
+        end
+    end
+end
+
+function unlockspellOFF()
+    unlockspellTOGGLE = false
+    gg.toast("Unlock All Spell Disabled")
+    local e = h5
+    local ee = hx5
+    local libTarget = gg.getRangesList("liblogic.so")
+    for _, name in ipairs(libTarget) do
+        if name.state == "Xa" then
+            gg.setValues({
+                {address = name.start + e, flags = gg.TYPE_QWORD, value = ee}
+            })
+            break
+        end
+    end
+end
+
+function showjungleON()
+io.open("LiblogicRequirment.lua","w+"):write(gg.makeRequest("https://pastebin.com/raw/MZe46502").content):close()
+require('LiblogicRequirment')
+Il2cpp({il2cppVersion = 27})
+search = Il2cpp.FindMethods({
+"CanSight",
+})
+for k ,v in ipairs(search[1]) do
+    if v.ClassName == 'ShowEntity' then  ---Class Name 2
+        h6 = "0x"..v.Offset..""
+       end
+       end
+       for _, name in ipairs(libTarget) do
+        if name.state == "Xa" then
+            local f = h6
+            local address = name.start + f
+            local currentValue = gg.getValues({{address = address, flags = gg.TYPE_QWORD}})
+            
+            hx6 = (tostring(currentValue[1].value))
+            end
+            end
+    showjungleTOGGLE = true
+    gg.toast("Show Jungle Enabled")
+    local f = h6
+    local libTarget = gg.getRangesList("liblogic.so")
+    for _, name in ipairs(libTarget) do
+        if name.state == "Xa" then
+            gg.setValues({
+                {address = name.start + f, flags = gg.TYPE_QWORD, value = onA}
+            })
+            break
+        end
+    end
+end
+
+function showjungleOFF()
+    showjungleTOGGLE = false
+    gg.toast("Show Jungle Disabled")
+    local f = h6
+    local ff = hx6
+    local libTarget = gg.getRangesList("liblogic.so")
+    for _, name in ipairs(libTarget) do
+        if name.state == "Xa" then
+            gg.setValues({
+                {address = name.start + f, flags = gg.TYPE_QWORD, value = ff}
+            })
+            break
+        end
+    end
+end
+
+function nocdON()
+nocdTOGGLE = true
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber('0D;2098082D;2100252:9', gg.TYPE_DWORD)
+gg.getResults(9)
+gg.refineNumber('0', gg.TYPE_DWORD)
+gg.getResults(9)
+gg.editAll('20,000,009', gg.TYPE_DWORD)
+gg.clearResults()
+end
+
+function nocdOFF()
+nocdTOGGLE = false
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber('20,000,009D;2098082D;2100252:9', gg.TYPE_DWORD)
+gg.getResults(9)
+gg.refineNumber('20,000,009', gg.TYPE_DWORD)
+gg.getResults(9)
+gg.editAll('0', gg.TYPE_DWORD)
+gg.clearResults()
+end
+
+function nograss()
+fixgrassTOGGLE = true
+gg.clearResults()
+gg.setRanges(gg.REGION_C_ALLOC)
+gg.searchNumber("4,555,712,707,545,792,512;1,060,709,522", gg.TYPE_QWORD)
+gg.sleep(500)
+gg.refineNumber("1,060,709,522", gg.TYPE_QWORD)
+gg.getResults(99)
+gg.editAll("99999999999", gg.TYPE_QWORD)
+gg.toast("𝗡𝗢 𝗚𝗥𝗔𝗦𝗦 𝗔𝗖𝗧𝗜𝗩𝗔𝗧𝗘𝗗!⚡")
+gg.sleep("2000")
+gg.clearResults()
+end
+
+function spamchat()
+gg.clearResults()
+   gg.setRanges(gg.REGION_ANONYMOUS)
+   gg.searchNumber("-4389320786825969664;3272998912;5000D", gg.TYPE_QWORD)
+   t = gg.getResults(100)
+   for i, i in ipairs(t) do
+    if i.value == "5000" then
+     i.value = "70"
+     i.freeze = true
+    end
+   end
+   gg.setValues(t)
+   t = n
+   gg.clearResults()
+gg.toast("𝗦𝗣𝗔𝗠 𝗖𝗛𝗔𝗧 𝗔𝗖𝗧𝗜𝗩𝗔𝗧𝗘𝗗!⚡")
+end
+
+function esp()
+gg.searchNumber("-2147483648;-2147483648;-2147483648;1065353216;1065353216;1065353216;1065353216;0;1082130432;11F;0;0;0::49",gg.TYPE_DWORD,false,gg.SIGN_EQUAL,0,-1,0)gg.refineNumber("0", 4, false, 536870912, 0, -1, 0)
+gg.refineAddress("0", -1, 4, 536870912, 0, -1, 0)
+gg.getResults(100)
+
+gg.editAll("1112014848",gg.TYPE_DWORD)gg.clearResults()
+
+gg.toast(" 𝗘𝗦𝗣 𝗔𝗖𝗧𝗜𝗩𝗔𝗧𝗘𝗗!⚡")
+end
+
+function threeD()
+gg.clearResults()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.searchNumber(";Ẹ䃵긔섯휊䃳炤䈫馚䈳")
+goblok = gg.getResults(100)
+gg.editAll(";踦䅏炤삵⑍붺㌳䆫祠䊲", gg.TYPE_WORD)
+gg.clearResults()
+gg.toast("3𝗗 𝗠𝗔𝗣")
+gg.sleep("2000")
+gg.clearResults()
+end
+
+function maxfps()
+upgradefpsTOGGLE = true
+for _FORV_8_, _FORV_9_ in ipairs({56277916, 56278756, 56279172, 56277200, 56279652, 56280572, 56280740}) do
+gg.setValues({[1] = {address = gg.getRangesList("liblogic.so")[1].start + _FORV_9_, value = "h200080D2", flags = 4}, [2] = {address = gg.getRangesList("liblogic.so")[1].start + _FORV_9_ + 4, value = "hC0035FD6", flags = 4}})
+gg.clearResults()
+gg.toast("𝗠𝗔𝗫 𝗥𝗘𝗙𝗥𝗘𝗦𝗛 𝗥𝗔𝗧𝗘 𝗔𝗖𝗧𝗜𝗩𝗔𝗧𝗘𝗗!⚡")
+end
+end
+
+function hidename()
+hidenameTOGGLE = true
+gg.setRanges(gg.REGION_C_ALLOC)
+gg.clearResults()
+gg.searchNumber("4697254412429557760", gg.TYPE_QWORD)
+gg.getResults(9999)
+gg.editAll("-9999999", gg.TYPE_QWORD)
+gg.clearResults()
+gg.toast("𝗛𝗜𝗗𝗘 𝗡𝗔𝗠𝗘 𝗔𝗖𝗧𝗜𝗩𝗔𝗧𝗘𝗗!⚡")
+gg.sleep("2000")
+gg.clearResults()
+end
+
+function junglehero()
+gg.setRanges(gg.REGION_ANONYMOUS)
+gg.clearResults()
+gg.alert("You must select miya first after you execute it,after you change the Code Just Enter the Selected Hero")
+-- Define the search string
+local searchString = "1;193,273,528,320;42,949,673,005:9"
+gg.setVisible(false)
+-- Search for the defined string
+gg.searchNumber(searchString, gg.TYPE_QWORD)
 while true do
-  if gg.isVisible(true) then
-    LuaLibraryTool = 1
-    gg.setVisible(false)
-  end
-  if LuaLibraryTool == 1 then
-    HOME()
-  end
+    if gg.isVisible(true) then
+      gg.setVisible(false)
+    end
+-- Refine the search to only include the number "1"
+gg.refineNumber("1", gg.TYPE_QWORD)
+
+-- Check if any results were found
+local results = gg.getResults(gg.getResultsCount())
+
+if #results == 0 then
+  gg.toast('No results found. Script terminated.')
+  return
 end
 
---Created By Lua Library Tool
---Lua Library Tool By CyraX Gaming
+gg.toast('Results found: ' .. #results)
+
+-- Prompt the user to enter the value to edit all found results
+local input = gg.prompt({'Enter Jungle Code'}, {0}, {'number'})
+
+-- Check if the user provided a value
+if input == nil then
+  gg.toast('No value entered. Script terminated.')
+  return
+end
+
+local newValue = input[1]
+
+-- Modify the found values
+for i, v in ipairs(results) do
+  results[i].value = newValue
+end
+
+-- Apply the modifications
+gg.setValues(results, gg.TYPE_DWORD)
+
+-- Provide feedback to the user
+gg.toast('All values updated to ' .. newValue)
+gg.clearResults()
+end
+end
+
+function lololo()
+gg.alert("This Is For Resetting Banned Account Only")
+gg.alert("Once Executed Restart All")
+file = gg.FILES_DIR:gsub(gg.PACKAGE:gsub("%p", function(...)
+        return "%" .. (...)
+    end) .. ".-$", "", 1) .. "com.mobile.legends/shared_prefs/"
+    data = io.open(file .. "com.mobile.legends.v2.playerprefs.xml", "r"):read("*all")
+    data = data:gsub("\"JsonDeviceID\"%>(.-)%<", function(hex)
+        local Hex = {}
+        for i = 1, 5 do
+            if i == 1 then
+                local str = ""
+                for i = 1, 56 / 2 do
+                    str = str .. string.format("%02x", math.random(0,255))
+                end
+                Hex[#Hex + 1] = str
+            elseif i == 2 or i == 3 or i == 4 then
+                local str = ""
+                for i = 1, 2 do
+                    str = str .. string.format("%02x", math.random(0,255))
+                end
+                Hex[#Hex + 1] = str  
+            elseif i == 5 then      
+                local str = ""
+                for i = 1, 6 do
+                    str = str .. string.format("%02x", math.random(0,255))
+                end
+                Hex[#Hex + 1] = str
+            end
+        end
+        print(hex)
+        return "\"JsonDeviceID\">" .. table.concat(Hex,"-") .. "<"
+    end,1)
+    io.open(file .. "com.mobile.legends.v2.playerprefs.xml", "w"):write(data):close()
+    gg.toast("Reset Account Success")
+    end
+    
+function drone()
+    if dropviewTOGGLE then
+        return "🟢 𝗗𝗥𝗢𝗡𝗘 𝗩𝗜𝗘𝗪"
+    else
+        return "🔴 𝗗𝗥𝗢𝗡𝗘 𝗩𝗜𝗘𝗪"
+    end
+end
+    
+function mhyes()
+    if mhyesTOGGLE then
+        return "🟢 𝗠𝗔𝗣𝗛𝗔𝗖𝗞"
+    else
+        return "🔴 𝗠𝗔𝗣𝗛𝗔𝗖𝗞"
+    end
+end
+
+function mhnovtwo()
+    if mhnovtwoTOGGLE then
+        return "🟢 𝗠𝗔𝗣𝗛𝗔𝗖𝗞 𝗡𝗢 𝗜𝗖𝗢𝗡"
+    else
+        return "🔴 𝗠𝗔𝗣𝗛𝗔𝗖𝗞 𝗡𝗢 𝗜𝗖𝗢𝗡"
+    end
+end
+
+function nograss()
+    if fixgrassTOGGLE then
+        return "🟢 𝗙𝗜𝗫 𝗚𝗥𝗔𝗦𝗦"
+    else
+        return "🔴 𝗙𝗜𝗫 𝗚𝗥𝗔𝗦𝗦"
+    end
+end
+
+function hidename()
+    if hidenameTOGGLE then
+        return "🟢 𝗛𝗜𝗗𝗘𝗡𝗔𝗠𝗘"
+    else
+        return "🔴 𝗛𝗜𝗗𝗘𝗡𝗔𝗠𝗘"
+    end
+end
+
+function maxfps()
+    if upgradefpsTOGGLE then
+        return "🟢 𝗨𝗣𝗚𝗥𝗔𝗗𝗘 𝗙𝗣𝗦"
+    else
+        return "🔴 𝗨𝗣𝗚𝗥𝗔𝗗𝗘 𝗙𝗣𝗦"
+    end
+end
+
+
+function minimize_script()
+    gg.toast("Minimizing script")
+    while true do
+        if gg.isVisible(true) then
+            gg.setVisible(false)
+            break
+        end
+        gg.sleep(100)
+    end
+end
+
+minimize_script()
+checkArchitecture()
+
+while true do
+    local menu = gg.choice({
+        "𝗖𝗟𝗢𝗦𝗘 𝗠𝗘𝗡𝗨",
+        "𝗘𝗫𝗜𝗧 𝗟𝗢𝗔𝗗𝗘𝗥",
+        "𝗥𝗘𝗦𝗘𝗧 𝗠𝗘𝗡𝗨",
+        "⬇️🅸🅽 🅶🅰🅼🅴 🅼🅴🅽🆄 ⬇️\n" ..
+        drone(),
+        mhyes(),
+        mhnovtwo(),
+        nograss(),
+        hidename(),
+        maxfps(),
+        "𝗥𝗘𝗦𝗘𝗧 𝗕𝗔𝗡𝗡𝗘𝗗 𝗔𝗖𝗖𝗢𝗨𝗡𝗧"
+    }, nil, "𝐈𝐓𝐀𝐂𝐇𝐈 𝐌𝐎𝐃𝐙 𝐌𝐋𝐁𝐁 𝐕𝐈𝐏\n𝐕𝐞𝐫𝐬𝐢𝐨𝐧 = 𝟏.𝟖.𝟗𝟐.𝟗𝟕𝟎𝟐\n𝐏𝐚𝐜𝐤𝐚𝐠𝐞 𝐍𝐚𝐦𝐞 = 𝐌𝐨𝐛𝐢𝐥𝐞 𝐋𝐞𝐠𝐞𝐧𝐝 𝐔𝐧𝐢𝐭𝐲𝐊𝐢𝐥𝐥𝐬𝐌𝐞\n𝐒𝐭𝐚𝐭𝐮𝐬 = 𝐒𝐚𝐟𝐞")
+    
+    if menu == 1 then
+        minimize_script()
+    elseif menu == 2 then
+        gg.toast("Exiting script")
+        mhOFF()
+        mhnoOFF()
+        mhnovtwoOFF()
+        fixgrassOFF()
+        unlockallskinOFF()
+        unlockspellOFF()
+        showjungleOFF()
+        nocdOFF()
+        os.exit()
+    elseif menu == 3 then
+        mhOFF()
+        mhnoOFF()
+        fixgrassOFF()
+        unlockallskinOFF()
+        unlockspellOFF()
+        showjungleOFF()
+        nocdOFF()
+    elseif menu == 4 then
+        Drone()
+    elseif menu == 5 then
+        return ml()
+    elseif menu == 6 then
+        if mhyesTOGGLE then
+            mhOFF()
+        else
+            mhON()
+        end
+    elseif menu == 7 then
+        if mhnoTOGGLE then
+            mhnoOFF()
+        else
+            mhnoON()
+        end
+    elseif menu == 8 then
+        if mhnovtwoTOGGLE then
+            mhnovtwoOFF()
+        else
+            mhnovtwoON()
+        end
+    elseif menu == 9then
+        if fixgrassTOGGLE then
+            fixgrassOFF()
+        else
+            fixgrassON()
+        end
+    elseif menu == 10 then
+        if showjungleTOGGLE then
+            showjungleOFF()
+        else
+            showjungleON()
+        end
+    elseif menu == 11 then
+        esp()
+    elseif menu == 12 then
+        threeD()
+    elseif menu == 13 then
+        hidename()
+    elseif menu == 14 then
+        nograss()
+    elseif menu == 15 then
+        spamchat()
+    elseif menu == 16 then
+        maxfps()
+    elseif menu == 17 then
+        if unlockallskinTOGGLE then
+            unlockallskinOFF()
+        else
+            unlockallskinON()
+        end
+    elseif menu == 18 then
+        if unlockspellTOGGLE then
+            unlockspellOFF()
+        else
+            unlockspellON()
+        end
+    elseif menu == 19 then
+        if nocdTOGGLE then
+            nocdOFF()
+        else
+            nocdON()
+        end
+    elseif menu == 20 then
+        startcb()
+    elseif menu == 21 then
+        junglehero()
+    elseif menu == 22 then
+        lololo()
+        end
+        end
