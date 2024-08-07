@@ -1288,7 +1288,7 @@ function bypasscheat()
     else
         return "🔴 𝗕𝗬𝗣𝗔𝗦𝗦 𝗔𝗡𝗧𝗜 𝗖𝗛𝗘𝗔𝗧"
     end
-end
+end 
 
 function bypassreport()
     if bypassreportTOGGLE then
@@ -1396,7 +1396,7 @@ while true do
         bypassreportOFF()
         bypasslobbyOFF()
         droneOFF()
-        mhOFF()
+        mhyesOFF()
         mhnovtwoOFF()
         fixgrassOFF()
         hidenametwo()OFF()
@@ -1407,7 +1407,7 @@ while true do
         bypassreportOFF()
         bypasslobbyOFF()
         droneOFF()
-        mhOFF()
+        mhyesOFF()
         mhnovtwoOFF()
         fixgrassOFF()
         offnameOFF()
@@ -1440,7 +1440,7 @@ while true do
         if mhyesTOGGLE then
             mhyesOFF()
         else
-            mhyesOFF()
+            mhyesON()
         end
     elseif menu == 9 then
         if mhnovtwoTOGGLE then
