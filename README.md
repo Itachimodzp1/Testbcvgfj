@@ -1,11 +1,15 @@
 local mhyesTOGGLE = false
-local mhnoTOGGLE = false
+local maxfpsTOGGLE = false
 local fixgrassTOGGLE = false
-local hidenameTOGGLE = false
+local hidenametwoTOGGLE = false
 local upgradefpsTOGGLE = false
 local dropviewTOGGLE = false
-local nocdTOGGLE = false
 local mhnovtwoTOGGLE = false
+local bypasslobTOGGLE = false
+local bypasscheatTOGGLE = false
+local bypassreportTOGGLE = false
+local bypasslobbyTOGGLE = false
+
 
 local libTarget = gg.getRangesList("liblogic.so")
 
@@ -367,34 +371,6 @@ function unityVersion()
   end
 end
 
-function finalSpeedResult()
-  resultsCount = gg.getResultsCount()
-  local values = gg.getResults(resultsCount)
-  local results = {}
-  local speed = {}
-  for b = 1, #values do
-    local loop = 0x0
-    for i = 1, 70 do
-      results[#results + 1] = {address = values[b].address + loop, flags = gg.TYPE_FLOAT}
-      loop = loop + 4
-    end
-  end
-  results = gg.getValues(results)
-  for i, v in ipairs(results) do
-    if v.value == 1 then
-      speed[#speed +1] = {address = v.address, flags = v.flags, name = "Speed"}
-      break
-    end
-  end
-  
-  if #speed ~= 0 then
-    gg.toast("Time.timeScale found")
-    gg.addListItems(speed)
-    gg.clearResults()
-    gg.alert("𝗠𝗴𝘂𝗯𝘀 𝗦𝗽𝗲𝗲𝗱 𝗛𝗮𝗰𝗸 𝗜𝘀 𝗜𝗻 𝗧𝗵𝗲 𝗦𝗮𝘃𝗲 𝗟𝗶𝘀𝘁 𝗘𝗱𝗶𝘁 𝗧𝗵𝗲 𝗦𝗽𝗲𝗲𝗱 𝗕𝘆 𝗙𝗹𝗼𝗮𝘁🔥")
-    os.exit()
-  end
-end
 
 function startxa()
   gg.clearResults()
@@ -480,7 +456,6 @@ function startcb()
   end
   gg.loadResults(valu)
   finalSpeedResult()
-  gg.alert("Mgubs Speedhack is In The save list edit the speed by float🔥")
 end
 
 
@@ -530,10 +505,234 @@ function start()
   end
 end
 
----------
+--------------------------------bypass menu-----------------------------------------
+function bypasscheatON() --choice
+bypasscheatTOGGLE = false
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x5c1539c, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x5c1539c + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x2f9d390, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x2f9d390 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x2f9d394, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x2f9d394 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x5c15398, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x5c15398 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x57EBF28, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x57EBF28 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x57E7D90, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x57E7D90 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D600, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D600 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D608, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D608 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D618, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D618 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D620, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D620 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D630, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D630 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D638, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D638 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D640, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D640 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D648, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D648 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D650, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D650 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D660, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D660 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D668, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D668 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D678, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D678 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D680, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D680 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D690, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D690 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D698, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D698 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D6A8, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D6A8 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D6B0, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D6B0 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D6C0, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D6C0 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D6C8, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D6C8 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+local LibStart = gg.getRangesList('liblogic.so')[1].start
+local values = {
+    { address = LibStart + 0x12D6D8, value = 'h C0 03 5F D6', flags = 4 },
+    { address = LibStart + (0x12D6D8 + 0x4), value = 'h C0 03 5F D6', flags = 4 }
+}
+for _, v in ipairs(values) do
+    gg.setValues({ v })
+end
+gg.alert("𝐀𝐍𝐓𝐈 𝐂𝐇𝐄𝐀𝐓 𝐀𝐂𝐓𝐈𝐕𝐀𝐓𝐄")
+end
 
-function Drone()
-dropview = true
+function bypassreportON()
+bypassreportTOGGLE = false
+HexPatches.ITACHI("libnativelogin.so",0xb9e3c,"h00 00 80 D2 C0 03 5F D6",32);
+HexPatches.ITACHI("libnativelogin.so",0xba1e4,"h00 00 80 D2 C0 03 5F D6",32);
+HexPatches.ITACHI("libnativelogin.so",0xba2ac,"h00 00 80 D2 C0 03 5F D6",32);
+HexPatches.ITACHI("libnativelogin.so",0x2b66c,"h00 00 80 D2 C0 03 5F D6",32);
+HexPatches.ITACHI("libnativelogin.so",0x2b6ec,"h00 00 80 D2 C0 03 5F D6",32);
+HexPatches.ITACHI("libnativelogin.so",0x2b7c4,"h00 00 80 D2 C0 03 5F D6",32);
+gg.alert("𝐀𝐍𝐓𝐈 𝐂𝐇𝐄𝐀𝐓 𝐀𝐂𝐓𝐈𝐕𝐀𝐓𝐄")
+end
+
+-----------------------hack menu--------------------------
+function droneON()
+dropviewTOGGLE = false
 function 
 split(szFullString, szSeparator) 
 local nFindStartIndex = 1 local nSplitIndex = 1 local nSplitArray 
@@ -762,7 +961,7 @@ end
 
 if UBED[2] == true then return menu end end HOMEDM = -1 end
 
-function mhON()
+function mhyesON()
 io.open("LiblogicRequirment.lua","w+"):write(gg.makeRequest("https://pastebin.com/raw/MZe46502").content):close()
 require('LiblogicRequirment')
 Il2cpp({il2cppVersion = 27})
@@ -800,7 +999,7 @@ for k ,v in ipairs(search[1]) do
 end
 
 
-function mhOFF()
+function mhyesOFF()
     mhyesTOGGLE = false
     gg.toast("Maphack Disabled")
     local a = h1
@@ -991,235 +1190,7 @@ function fixgrassOFF()
     end
 end
 
-function unlockallskinON()
-io.open("LiblogicRequirment.lua","w+"):write(gg.makeRequest("https://pastebin.com/raw/MZe46502").content):close()
-require('LiblogicRequirment')
-Il2cpp({il2cppVersion = 27})
-search = Il2cpp.FindMethods({
-"BLuckyBoyFreeSkin",
-})
-for k ,v in ipairs(search[1]) do
-    if v.ClassName == 'ChooseHeroMgr' then  ---Class Name 2
-        h4 = "0x"..v.Offset..""
-       end
-       end
-       for _, name in ipairs(libTarget) do
-        if name.state == "Xa" then
-            local d = h4
-            local address = name.start + d
-            local currentValue = gg.getValues({{address = address, flags = gg.TYPE_QWORD}})
-            
-            hx4 = (tostring(currentValue[1].value))
-            end
-            end
-    unlockallskinTOGGLE = true
-    gg.toast("Unlock All Skin Enabled")
-    local d = h4
-    local libTarget = gg.getRangesList("liblogic.so")
-    for _, name in ipairs(libTarget) do
-        if name.state == "Xa" then
-            gg.setValues({
-                {address = name.start + d, flags = gg.TYPE_QWORD, value = onA}
-            })
-            break
-        end
-    end
-end
-
-function unlockallskinOFF()
-    unlockallskinTOGGLE = false
-    gg.toast("Unlock All Skin Disabled")
-    local d = h4
-    local dd = hx4
-    local libTarget = gg.getRangesList("liblogic.so")
-    for _, name in ipairs(libTarget) do
-        if name.state == "Xa" then
-            gg.setValues({
-                {address = name.start + d, flags = gg.TYPE_QWORD, value = dd}
-            })
-            break
-        end
-    end
-end
-
-function unlockspellON()
-io.open("LiblogicRequirment.lua","w+"):write(gg.makeRequest("https://pastebin.com/raw/MZe46502").content):close()
-require('LiblogicRequirment')
-Il2cpp({il2cppVersion = 27})
-search = Il2cpp.FindMethods({
-"BCustomRoomFreeSkill",
-})
-for k ,v in ipairs(search[1]) do
-    if v.ClassName == 'ChooseHeroMgr' then  ---Class Name 2
-        h5 = "0x"..v.Offset..""
-       end
-       end
-       for _, name in ipairs(libTarget) do
-        if name.state == "Xa" then
-            local e = h5
-            local address = name.start + e
-            local currentValue = gg.getValues({{address = address, flags = gg.TYPE_QWORD}})
-            
-            hx5 = (tostring(currentValue[1].value))
-            end
-            end
-    unlockspellTOGGLE = true
-    gg.toast("Unlock All Spell Enabled")
-    local e = h5
-    local libTarget = gg.getRangesList("liblogic.so")
-    for _, name in ipairs(libTarget) do
-        if name.state == "Xa" then
-            gg.setValues({
-                {address = name.start + e, flags = gg.TYPE_QWORD, value = onA}
-            })
-            break
-        end
-    end
-end
-
-function unlockspellOFF()
-    unlockspellTOGGLE = false
-    gg.toast("Unlock All Spell Disabled")
-    local e = h5
-    local ee = hx5
-    local libTarget = gg.getRangesList("liblogic.so")
-    for _, name in ipairs(libTarget) do
-        if name.state == "Xa" then
-            gg.setValues({
-                {address = name.start + e, flags = gg.TYPE_QWORD, value = ee}
-            })
-            break
-        end
-    end
-end
-
-function showjungleON()
-io.open("LiblogicRequirment.lua","w+"):write(gg.makeRequest("https://pastebin.com/raw/MZe46502").content):close()
-require('LiblogicRequirment')
-Il2cpp({il2cppVersion = 27})
-search = Il2cpp.FindMethods({
-"CanSight",
-})
-for k ,v in ipairs(search[1]) do
-    if v.ClassName == 'ShowEntity' then  ---Class Name 2
-        h6 = "0x"..v.Offset..""
-       end
-       end
-       for _, name in ipairs(libTarget) do
-        if name.state == "Xa" then
-            local f = h6
-            local address = name.start + f
-            local currentValue = gg.getValues({{address = address, flags = gg.TYPE_QWORD}})
-            
-            hx6 = (tostring(currentValue[1].value))
-            end
-            end
-    showjungleTOGGLE = true
-    gg.toast("Show Jungle Enabled")
-    local f = h6
-    local libTarget = gg.getRangesList("liblogic.so")
-    for _, name in ipairs(libTarget) do
-        if name.state == "Xa" then
-            gg.setValues({
-                {address = name.start + f, flags = gg.TYPE_QWORD, value = onA}
-            })
-            break
-        end
-    end
-end
-
-function showjungleOFF()
-    showjungleTOGGLE = false
-    gg.toast("Show Jungle Disabled")
-    local f = h6
-    local ff = hx6
-    local libTarget = gg.getRangesList("liblogic.so")
-    for _, name in ipairs(libTarget) do
-        if name.state == "Xa" then
-            gg.setValues({
-                {address = name.start + f, flags = gg.TYPE_QWORD, value = ff}
-            })
-            break
-        end
-    end
-end
-
-function nocdON()
-nocdTOGGLE = true
-gg.setRanges(gg.REGION_ANONYMOUS)
-gg.searchNumber('0D;2098082D;2100252:9', gg.TYPE_DWORD)
-gg.getResults(9)
-gg.refineNumber('0', gg.TYPE_DWORD)
-gg.getResults(9)
-gg.editAll('20,000,009', gg.TYPE_DWORD)
-gg.clearResults()
-end
-
-function nocdOFF()
-nocdTOGGLE = false
-gg.setRanges(gg.REGION_ANONYMOUS)
-gg.searchNumber('20,000,009D;2098082D;2100252:9', gg.TYPE_DWORD)
-gg.getResults(9)
-gg.refineNumber('20,000,009', gg.TYPE_DWORD)
-gg.getResults(9)
-gg.editAll('0', gg.TYPE_DWORD)
-gg.clearResults()
-end
-
-function nograss()
-fixgrassTOGGLE = true
-gg.clearResults()
-gg.setRanges(gg.REGION_C_ALLOC)
-gg.searchNumber("4,555,712,707,545,792,512;1,060,709,522", gg.TYPE_QWORD)
-gg.sleep(500)
-gg.refineNumber("1,060,709,522", gg.TYPE_QWORD)
-gg.getResults(99)
-gg.editAll("99999999999", gg.TYPE_QWORD)
-gg.toast("𝗡𝗢 𝗚𝗥𝗔𝗦𝗦 𝗔𝗖𝗧𝗜𝗩𝗔𝗧𝗘𝗗!⚡")
-gg.sleep("2000")
-gg.clearResults()
-end
-
-function spamchat()
-gg.clearResults()
-   gg.setRanges(gg.REGION_ANONYMOUS)
-   gg.searchNumber("-4389320786825969664;3272998912;5000D", gg.TYPE_QWORD)
-   t = gg.getResults(100)
-   for i, i in ipairs(t) do
-    if i.value == "5000" then
-     i.value = "70"
-     i.freeze = true
-    end
-   end
-   gg.setValues(t)
-   t = n
-   gg.clearResults()
-gg.toast("𝗦𝗣𝗔𝗠 𝗖𝗛𝗔𝗧 𝗔𝗖𝗧𝗜𝗩𝗔𝗧𝗘𝗗!⚡")
-end
-
-function esp()
-gg.searchNumber("-2147483648;-2147483648;-2147483648;1065353216;1065353216;1065353216;1065353216;0;1082130432;11F;0;0;0::49",gg.TYPE_DWORD,false,gg.SIGN_EQUAL,0,-1,0)gg.refineNumber("0", 4, false, 536870912, 0, -1, 0)
-gg.refineAddress("0", -1, 4, 536870912, 0, -1, 0)
-gg.getResults(100)
-
-gg.editAll("1112014848",gg.TYPE_DWORD)gg.clearResults()
-
-gg.toast(" 𝗘𝗦𝗣 𝗔𝗖𝗧𝗜𝗩𝗔𝗧𝗘𝗗!⚡")
-end
-
-function threeD()
-gg.clearResults()
-gg.setRanges(gg.REGION_ANONYMOUS)
-gg.searchNumber(";Ẹ䃵긔섯휊䃳炤䈫馚䈳")
-goblok = gg.getResults(100)
-gg.editAll(";踦䅏炤삵⑍붺㌳䆫祠䊲", gg.TYPE_WORD)
-gg.clearResults()
-gg.toast("3𝗗 𝗠𝗔𝗣")
-gg.sleep("2000")
-gg.clearResults()
-end
-
-function maxfps()
+function maxfpsON()
 upgradefpsTOGGLE = true
 for _FORV_8_, _FORV_9_ in ipairs({56277916, 56278756, 56279172, 56277200, 56279652, 56280572, 56280740}) do
 gg.setValues({[1] = {address = gg.getRangesList("liblogic.so")[1].start + _FORV_9_, value = "h200080D2", flags = 4}, [2] = {address = gg.getRangesList("liblogic.so")[1].start + _FORV_9_ + 4, value = "hC0035FD6", flags = 4}})
@@ -1228,8 +1199,24 @@ gg.toast("𝗠𝗔𝗫 𝗥𝗘𝗙𝗥𝗘𝗦𝗛 𝗥𝗔𝗧𝗘 𝗔𝗖�
 end
 end
 
-function hidename()
-hidenameTOGGLE = true
+function maxfpsOFF()
+    maxfpsTOGGLE = false
+    gg.toast("Upgrade Fps Disabled")
+    local c = h3
+    local cc = hx3
+    local libTarget = gg.getRangesList("liblogic.so")
+    for _, name in ipairs(libTarget) do
+        if name.state == "Xa" then
+            gg.setValues({
+                {address = name.start + c, flags = gg.TYPE_QWORD, value = cc}
+            })
+            break
+        end
+    end
+end
+
+function hidenametwoON()
+hidenametwoTOGGLE = true
 gg.setRanges(gg.REGION_C_ALLOC)
 gg.clearResults()
 gg.searchNumber("4697254412429557760", gg.TYPE_QWORD)
@@ -1241,55 +1228,20 @@ gg.sleep("2000")
 gg.clearResults()
 end
 
-function junglehero()
-gg.setRanges(gg.REGION_ANONYMOUS)
-gg.clearResults()
-gg.alert("You must select miya first after you execute it,after you change the Code Just Enter the Selected Hero")
--- Define the search string
-local searchString = "1;193,273,528,320;42,949,673,005:9"
-gg.setVisible(false)
--- Search for the defined string
-gg.searchNumber(searchString, gg.TYPE_QWORD)
-while true do
-    if gg.isVisible(true) then
-      gg.setVisible(false)
+function offnameOFF()
+    maxfpsTOGGLE = false
+    gg.toast("Hidename Disabled")
+    local c = h3
+    local cc = hx3
+    local libTarget = gg.getRangesList("liblogic.so")
+    for _, name in ipairs(libTarget) do
+        if name.state == "Xa" then
+            gg.setValues({
+                {address = name.start + c, flags = gg.TYPE_QWORD, value = cc}
+            })
+            break
+        end
     end
--- Refine the search to only include the number "1"
-gg.refineNumber("1", gg.TYPE_QWORD)
-
--- Check if any results were found
-local results = gg.getResults(gg.getResultsCount())
-
-if #results == 0 then
-  gg.toast('No results found. Script terminated.')
-  return
-end
-
-gg.toast('Results found: ' .. #results)
-
--- Prompt the user to enter the value to edit all found results
-local input = gg.prompt({'Enter Jungle Code'}, {0}, {'number'})
-
--- Check if the user provided a value
-if input == nil then
-  gg.toast('No value entered. Script terminated.')
-  return
-end
-
-local newValue = input[1]
-
--- Modify the found values
-for i, v in ipairs(results) do
-  results[i].value = newValue
-end
-
--- Apply the modifications
-gg.setValues(results, gg.TYPE_DWORD)
-
--- Provide feedback to the user
-gg.toast('All values updated to ' .. newValue)
-gg.clearResults()
-end
 end
 
 function lololo()
@@ -1329,6 +1281,31 @@ file = gg.FILES_DIR:gsub(gg.PACKAGE:gsub("%p", function(...)
     gg.toast("Reset Account Success")
     end
     
+    
+function bypasscheat()
+    if bypasscheatTOGGLE then
+        return "🟢 𝗕𝗬𝗣𝗔𝗦𝗦 𝗔𝗡𝗧𝗜 𝗖𝗛𝗘𝗔𝗧"
+    else
+        return "🔴 𝗕𝗬𝗣𝗔𝗦𝗦 𝗔𝗡𝗧𝗜 𝗖𝗛𝗘𝗔𝗧"
+    end
+end
+
+function bypassreport()
+    if bypassreportTOGGLE then
+        return "🟢 𝗕𝗬𝗣𝗔𝗦𝗦 𝗔𝗡𝗧𝗜 𝗥𝗘𝗣𝗢𝗥𝗧"
+    else
+        return "🔴 𝗕𝗬𝗣𝗔𝗦𝗦 𝗔𝗡𝗧𝗜 𝗥𝗘𝗣𝗢𝗥𝗧"
+    end
+end
+
+function bypasslobby()
+    if bypasslobTOGGLE then
+        return "🟢 𝗕𝗬𝗣𝗔𝗦𝗦 𝗟𝗢𝗕𝗕𝗬"
+    else
+        return "🔴 𝗕𝗬𝗣𝗔𝗦𝗦 𝗟𝗢𝗕𝗕𝗬"
+    end
+end
+    
 function drone()
     if dropviewTOGGLE then
         return "🟢 𝗗𝗥𝗢𝗡𝗘 𝗩𝗜𝗘𝗪"
@@ -1353,7 +1330,7 @@ function mhnovtwo()
     end
 end
 
-function nograss()
+function fixgrass()
     if fixgrassTOGGLE then
         return "🟢 𝗙𝗜𝗫 𝗚𝗥𝗔𝗦𝗦"
     else
@@ -1361,8 +1338,8 @@ function nograss()
     end
 end
 
-function hidename()
-    if hidenameTOGGLE then
+function hidenametwo()
+    if hidenametwoTOGGLE then
         return "🟢 𝗛𝗜𝗗𝗘𝗡𝗔𝗠𝗘"
     else
         return "🔴 𝗛𝗜𝗗𝗘𝗡𝗔𝗠𝗘"
@@ -1398,11 +1375,15 @@ while true do
         "𝗘𝗫𝗜𝗧 𝗟𝗢𝗔𝗗𝗘𝗥",
         "𝗥𝗘𝗦𝗘𝗧 𝗠𝗘𝗡𝗨",
         "⬇️🅸🅽 🅶🅰🅼🅴 🅼🅴🅽🆄 ⬇️\n" ..
+        bypasscheat(),
+        bypassreport(),
+        bypasslobby(),
+        "⬇️🅸🅽 🅶🅰🅼🅴 🅼🅴🅽🆄 ⬇️\n" ..
         drone(),
         mhyes(),
         mhnovtwo(),
-        nograss(),
-        hidename(),
+        fixgrass(),
+        hidenametwo(),
         maxfps(),
         "𝗥𝗘𝗦𝗘𝗧 𝗕𝗔𝗡𝗡𝗘𝗗 𝗔𝗖𝗖𝗢𝗨𝗡𝗧"
     }, nil, "𝐈𝐓𝐀𝐂𝐇𝐈 𝐌𝐎𝐃𝐙 𝐌𝐋𝐁𝐁 𝐕𝐈𝐏\n𝐕𝐞𝐫𝐬𝐢𝐨𝐧 = 𝟏.𝟖.𝟗𝟐.𝟗𝟕𝟎𝟐\n𝐏𝐚𝐜𝐤𝐚𝐠𝐞 𝐍𝐚𝐦𝐞 = 𝐌𝐨𝐛𝐢𝐥𝐞 𝐋𝐞𝐠𝐞𝐧𝐝 𝐔𝐧𝐢𝐭𝐲𝐊𝐢𝐥𝐥𝐬𝐌𝐞\n𝐒𝐭𝐚𝐭𝐮𝐬 = 𝐒𝐚𝐟𝐞")
@@ -1411,92 +1392,82 @@ while true do
         minimize_script()
     elseif menu == 2 then
         gg.toast("Exiting script")
+        bypasscheatOFF()
+        bypassreportOFF()
+        bypasslobbyOFF()
+        droneOFF()
         mhOFF()
-        mhnoOFF()
         mhnovtwoOFF()
         fixgrassOFF()
-        unlockallskinOFF()
-        unlockspellOFF()
-        showjungleOFF()
-        nocdOFF()
+        hidenametwo()OFF()
+        maxfpsOFF()
         os.exit()
     elseif menu == 3 then
+        bypasscheatOFF()
+        bypassreportOFF()
+        bypasslobbyOFF()
+        droneOFF()
         mhOFF()
-        mhnoOFF()
+        mhnovtwoOFF()
         fixgrassOFF()
-        unlockallskinOFF()
-        unlockspellOFF()
-        showjungleOFF()
-        nocdOFF()
+        offnameOFF()
+        maxfpsOFF()
     elseif menu == 4 then
-        Drone()
-    elseif menu == 5 then
-        return ml()
-    elseif menu == 6 then
-        if mhyesTOGGLE then
-            mhOFF()
+        if bypasscheatTOGGLE then
+            bypasscheatOFF()
         else
-            mhON()
+            bypasscheatON()
+        end
+    elseif menu == 5 then
+        if bypassreportTOGGLE then
+            bypassreportOFF()
+        else
+            bypassreportON()
+        end
+    elseif menu == 6 then
+        if bypasslobTOGGLE then
+            bypasslobbyOFF()
+        else
+            bypasslobbyON()
         end
     elseif menu == 7 then
-        if mhnoTOGGLE then
-            mhnoOFF()
+        if dropviewTOGGLE then
+            droneOFF()
         else
-            mhnoON()
+            droneON()
         end
     elseif menu == 8 then
+        if mhyesTOGGLE then
+            mhyesOFF()
+        else
+            mhyesOFF()
+        end
+    elseif menu == 9 then
         if mhnovtwoTOGGLE then
             mhnovtwoOFF()
         else
             mhnovtwoON()
         end
-    elseif menu == 9then
+    elseif menu == 10 then
         if fixgrassTOGGLE then
             fixgrassOFF()
         else
             fixgrassON()
         end
-    elseif menu == 10 then
-        if showjungleTOGGLE then
-            showjungleOFF()
-        else
-            showjungleON()
-        end
     elseif menu == 11 then
-        esp()
+        if hidenametwoTOGGLE then
+            hidenametwoOFF()
+        else
+            hidenametwoON()
+        end
     elseif menu == 12 then
-        threeD()
+        if upgradefpsTOGGLE then
+            maxfpsOFF()
+        else
+            maxfpsON()
+        end
     elseif menu == 13 then
-        hidename()
-    elseif menu == 14 then
-        nograss()
-    elseif menu == 15 then
-        spamchat()
-    elseif menu == 16 then
-        maxfps()
-    elseif menu == 17 then
-        if unlockallskinTOGGLE then
-            unlockallskinOFF()
-        else
-            unlockallskinON()
-        end
-    elseif menu == 18 then
-        if unlockspellTOGGLE then
-            unlockspellOFF()
-        else
-            unlockspellON()
-        end
-    elseif menu == 19 then
-        if nocdTOGGLE then
-            nocdOFF()
-        else
-            nocdON()
-        end
-    elseif menu == 20 then
-        startcb()
-    elseif menu == 21 then
-        junglehero()
-    elseif menu == 22 then
         lololo()
         end
         end
+   
