@@ -732,8 +732,8 @@ end
 
 -----------------------hack menu--------------------------
 function dropviewON()
-dropviewTOGGLE = false
 function 
+dropviewTOGGLE = false
 split(szFullString, szSeparator) 
 local nFindStartIndex = 1 local nSplitIndex = 1 local nSplitArray 
 = {} while true do local nFindLastIndex = string.find 
