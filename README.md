@@ -3,7 +3,6 @@ local maxfpsTOGGLE = false
 local fixgrassTOGGLE = false
 local hidenametwoTOGGLE = false
 local upgradefpsTOGGLE = false
-local dropviewTOGGLE = false
 local mhnovtwoTOGGLE = false
 local bypasslobTOGGLE = false
 local bypasscheatTOGGLE = false
@@ -732,8 +731,7 @@ end
 
 -----------------------hack menu--------------------------
 function dropviewON()
-function 
-dropviewTOGGLE = false
+function
 split(szFullString, szSeparator) 
 local nFindStartIndex = 1 local nSplitIndex = 1 local nSplitArray 
 = {} while true do local nFindLastIndex = string.find 
@@ -1306,14 +1304,6 @@ function bypasslobby()
     end
 end
     
-function dropview()
-    if dropviewTOGGLE then
-        return "🟢 𝗗𝗥𝗢𝗡𝗘 𝗩𝗜𝗘𝗪"
-    else
-        return "🔴 𝗗𝗥𝗢𝗡𝗘 𝗩𝗜𝗘𝗪"
-    end
-end
-    
 function mhyes()
     if mhyesTOGGLE then
         return "🟢 𝗠𝗔𝗣𝗛𝗔𝗖𝗞"
@@ -1379,7 +1369,7 @@ while true do
         bypassreport(),
         bypasslobby(),
         "⬇️🅸🅽 🅶🅰🅼🅴 🅼🅴🅽🆄 ⬇️\n" ..
-        dropview(),
+        "𝗗𝗥𝗢𝗡𝗘 𝗩𝗜𝗘𝗪",
         mhyes(),
         mhnovtwo(),
         fixgrass(),
@@ -1395,7 +1385,6 @@ while true do
         bypasscheatOFF()
         bypassreportOFF()
         bypasslobbyOFF()
-        dropviewOFF()
         mhyesOFF()
         mhnovtwoOFF()
         fixgrassOFF()
@@ -1406,7 +1395,6 @@ while true do
         bypasscheatOFF()
         bypassreportOFF()
         bypasslobbyOFF()
-        dropviewOFF()
         mhyesOFF()
         mhnovtwoOFF()
         fixgrassOFF()
@@ -1430,12 +1418,8 @@ while true do
         else
             bypasslobbyON()
         end
-    elseif menu == 7 then
-        if dropviewTOGGLE then
-            dropviewOFF()
-        else
-            dropviewON()
-        end
+    elseif menu == 4 then
+        dropview()
     elseif menu == 8 then
         if mhyesTOGGLE then
             mhyesOFF()
