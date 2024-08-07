@@ -731,7 +731,7 @@ gg.alert("𝐀𝐍𝐓𝐈 𝐂𝐇𝐄𝐀𝐓 𝐀𝐂𝐓𝐈𝐕𝐀𝐓𝐄
 end
 
 -----------------------hack menu--------------------------
-function droneON()
+function dropviewON()
 dropviewTOGGLE = false
 function 
 split(szFullString, szSeparator) 
@@ -1306,7 +1306,7 @@ function bypasslobby()
     end
 end
     
-function drone()
+function dropview()
     if dropviewTOGGLE then
         return "🟢 𝗗𝗥𝗢𝗡𝗘 𝗩𝗜𝗘𝗪"
     else
@@ -1379,7 +1379,7 @@ while true do
         bypassreport(),
         bypasslobby(),
         "⬇️🅸🅽 🅶🅰🅼🅴 🅼🅴🅽🆄 ⬇️\n" ..
-        drone(),
+        dropview(),
         mhyes(),
         mhnovtwo(),
         fixgrass(),
@@ -1395,7 +1395,7 @@ while true do
         bypasscheatOFF()
         bypassreportOFF()
         bypasslobbyOFF()
-        droneOFF()
+        dropviewOFF()
         mhyesOFF()
         mhnovtwoOFF()
         fixgrassOFF()
@@ -1406,7 +1406,7 @@ while true do
         bypasscheatOFF()
         bypassreportOFF()
         bypasslobbyOFF()
-        droneOFF()
+        dropviewOFF()
         mhyesOFF()
         mhnovtwoOFF()
         fixgrassOFF()
@@ -1432,9 +1432,9 @@ while true do
         end
     elseif menu == 7 then
         if dropviewTOGGLE then
-            droneOFF()
+            dropviewOFF()
         else
-            droneON()
+            dropviewON()
         end
     elseif menu == 8 then
         if mhyesTOGGLE then
