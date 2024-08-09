@@ -5,8 +5,7 @@ c = gg.makeRequest(server.."/mykey").content
 
 ch = gg.prompt(
  {'Enter your key and pres ok to continue'},
- {[1] = c},
- {[1] = 'text'})
+ {[1] = ''})
 
 if ch == nill then
  gg.alert("Please enter key and press ok")
